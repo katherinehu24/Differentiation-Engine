@@ -1226,9 +1226,58 @@ input[type="text"]:focus, textarea:focus {
   background: var(--surface);
   border-radius: 6px;
   box-shadow: var(--shadow-card);
+  margin-top: 16px;
   margin-bottom: 16px;
   padding: 24px 28px 20px;
 }
+
+/* Loading modal — shown during live retrieval */
+#loading-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+}
+.loading-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,31,68,0.5);
+  backdrop-filter: blur(2px);
+}
+.loading-card {
+  position: relative;
+  background: var(--surface);
+  padding: 28px 36px;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 12px 36px rgba(10,31,68,0.25);
+  min-width: 240px;
+  max-width: 360px;
+}
+.loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.85s linear infinite;
+  margin: 0 auto 14px;
+}
+.loading-text {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.loading-sub {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 .discovery-head {
   display: flex;
   align-items: baseline;
@@ -1424,12 +1473,12 @@ input[type="text"]:focus, textarea:focus {
         <div class="mode-row">
           <span class="field-label">Research mode</span>
           <div class="seg">
-            <button class="seg-btn active" data-mode="hybrid">Hybrid</button>
-            <button class="seg-btn" data-mode="manual">Manual</button>
+            <button class="seg-btn active" data-mode="hybrid">Live Search</button>
+            <button class="seg-btn" data-mode="manual">Manual Notes</button>
           </div>
         </div>
         <p class="mode-note" id="mode-note">
-          Hybrid: combine lightweight public signals (when available) with any pasted research. The engine reasons over inputs &mdash; it does not fabricate sources.
+          Live Search: combine lightweight public signals (when available) with any pasted research. The engine reasons over inputs &mdash; it does not fabricate sources.
         </p>
 
         <label class="field">
@@ -1440,8 +1489,8 @@ input[type="text"]:focus, textarea:focus {
         </label>
 
         <div class="panel-actions">
+          <button id="btn-discover" class="btn">Run Discovery</button>
           <button id="btn-generate" class="btn primary">Generate Analysis</button>
-          <button id="btn-discover" class="btn">Run Live Discovery</button>
           <button id="btn-clear" class="btn ghost">Clear</button>
         </div>
         <div id="gen-meta" class="gen-meta"></div>
@@ -1477,7 +1526,7 @@ input[type="text"]:focus, textarea:focus {
         <div class="empty-card">
           <div class="empty-card-num">01</div>
           <h4>Load or paste</h4>
-          <p>Enter a target company and website. Click <strong>Run Live Discovery</strong> to pull public-source evidence, or paste your own research notes.</p>
+          <p>Enter a target company and website. Click <strong>Run Discovery</strong> to pull public-source evidence, or switch to <strong>Manual Notes</strong> and paste your own research.</p>
         </div>
         <div class="empty-card">
           <div class="empty-card-num">02</div>
@@ -1603,32 +1652,40 @@ input[type="text"]:focus, textarea:focus {
         <div class="block-head">
           <div class="block-num">Appendix</div>
           <h2>Research Log</h2>
-          <div class="block-sub">Discovery feed &mdash; the raw retrieval results that informed the reasoning above. Sources, not conclusions. Each result is preserved with its URL for downstream citation.</div>
+          <div class="block-sub">Raw retrieval results that informed the reasoning above. Live feed renders separately &mdash; see the Discovery panel.</div>
         </div>
         <div class="block-body">
-          <div id="discovery" class="discovery" hidden>
-            <div class="discovery-head">
-              <div>
-                <div class="discovery-eyebrow">Stage 02 &middot; Discovery</div>
-                <h2>Live Research Feed</h2>
-                <div class="discovery-head-sub">Public-source retrieval across the target&rsquo;s own surface and the adjacent ecosystem. Real fetch via Tavily when <code>/api/search</code> is wired; cached real findings as a fallback.</div>
-              </div>
-              <span id="discovery-status" class="discovery-status">Idle</span>
-            </div>
-            <div id="discovery-queries"></div>
-            <div class="discovery-footer">
-              <div id="discovery-meta">Awaiting queries.</div>
-              <div id="discovery-actions"></div>
-            </div>
-          </div>
-          <div id="research-log-empty" class="muted" style="font-size:13px;padding:8px 0">
-            No retrieval yet for this analysis. Click <strong>Run Live Discovery</strong> to populate the log with public-source evidence.
-          </div>
+          <p class="muted" style="font-size:13px;margin:0">Discovery feed appears above the analysis when <strong>Run Discovery</strong> is invoked. Sources are preserved per query with URLs and snippets.</p>
         </div>
       </section>
     </div>
+
+    <div id="discovery" class="discovery" hidden>
+      <div class="discovery-head">
+        <div>
+          <div class="discovery-eyebrow">Discovery</div>
+          <h2>Live Research Feed</h2>
+          <div class="discovery-head-sub">Public-source retrieval across the target&rsquo;s own surface and the adjacent ecosystem. Real fetch via Tavily when <code>/api/search</code> is wired.</div>
+        </div>
+        <span id="discovery-status" class="discovery-status">Idle</span>
+      </div>
+      <div id="discovery-queries"></div>
+      <div class="discovery-footer">
+        <div id="discovery-meta">Awaiting queries.</div>
+        <div id="discovery-actions"></div>
+      </div>
+    </div>
   </section>
 </main>
+
+<div id="loading-modal" hidden>
+  <div class="loading-backdrop"></div>
+  <div class="loading-card">
+    <div class="loading-spinner"></div>
+    <div class="loading-text" id="loading-text">Loading…</div>
+    <div class="loading-sub" id="loading-sub">&nbsp;</div>
+  </div>
+</div>
 
 <div id="workflow-modal" class="modal" hidden>
   <div class="modal-backdrop" data-close></div>
@@ -2948,6 +3005,24 @@ async function searchOne(query) {
 
 const discoveryState = { queries: [], results: {}, running: false, mode: "unavailable", startedAt: 0 };
 
+function isLocalOrigin() {
+  if (location.protocol === "file:") return true;
+  const h = location.hostname || "";
+  return h === "localhost" || h === "127.0.0.1" || h === "0.0.0.0" || h === "::1";
+}
+
+function showLoading(text, sub) {
+  const m = document.getElementById("loading-modal");
+  if (!m) return;
+  document.getElementById("loading-text").textContent = text || "Loading…";
+  document.getElementById("loading-sub").textContent = sub || "";
+  m.hidden = false;
+}
+function hideLoading() {
+  const m = document.getElementById("loading-modal");
+  if (m) m.hidden = true;
+}
+
 async function runLiveDiscovery() {
   if (discoveryState.running) return;
   const company = document.getElementById("in-company").value.trim();
@@ -2959,11 +3034,39 @@ async function runLiveDiscovery() {
   discoveryState.results = {};
   discoveryState.running = true;
   discoveryState.startedAt = Date.now();
-  discoveryState.mode = "cached";
+  discoveryState.mode = "unavailable";
 
   const disc = document.getElementById("discovery");
   disc.hidden = false;
-  disc.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  const statusEl = document.getElementById("discovery-status");
+
+  // Short-circuit on local origin — the /api/search Vercel function is not
+  // reachable from file:// or localhost. Show one honest message instead of
+  // five identical "unavailable" rows.
+  if (isLocalOrigin()) {
+    document.getElementById("discovery-queries").innerHTML =
+      '<div class="q-row done"><div class="q-row-head">' +
+        '<div class="q-state error"></div>' +
+        '<div class="q-text">Live retrieval unavailable on this origin</div>' +
+        '<div class="q-time">' + escapeHTML(location.hostname || "file://") + '</div>' +
+      '</div><div class="q-results"><div class="q-result">' +
+        '<div class="q-result-title">/api/search is only reachable on the deployed Vercel URL</div>' +
+        '<div class="q-result-snippet">You are previewing on a local origin. Live web search runs through the Vercel serverless function at <code>/api/search</code>, which is not part of the static preview. To test live discovery, open the deployed Vercel URL. To proceed locally, switch to <strong>Manual Notes</strong> mode and paste your own research below, then click Generate Analysis.</div>' +
+      '</div></div></div>';
+    statusEl.textContent = "Local preview";
+    statusEl.className = "discovery-status cached";
+    document.getElementById("discovery-meta").innerHTML =
+      "<strong>Local origin</strong> &middot; live search disabled &middot; switch to Manual Notes to proceed";
+    document.getElementById("discovery-actions").innerHTML = "";
+    discoveryState.running = false;
+    flashGenMeta("Local preview — switch to Manual Notes mode and paste research, or open the deployed URL.");
+    disc.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return;
+  }
+
+  // Live retrieval path (Vercel-deployed).
+  showLoading("Running live discovery…", queries.length + " queries via Tavily");
 
   document.getElementById("discovery-queries").innerHTML = queries.map((q, idx) => (
     '<div class="q-row" id="q-row-' + idx + '">' +
@@ -2976,7 +3079,6 @@ async function runLiveDiscovery() {
     '</div>'
   )).join("");
 
-  const statusEl = document.getElementById("discovery-status");
   statusEl.textContent = "Searching";
   statusEl.className = "discovery-status live";
   document.getElementById("discovery-meta").innerHTML = "0 / " + queries.length + " queries";
@@ -3006,6 +3108,7 @@ async function runLiveDiscovery() {
     )).join("");
 
     document.getElementById("discovery-meta").innerHTML = (i + 1) + " / " + queries.length + " queries";
+    showLoading("Running live discovery…", (i + 1) + " / " + queries.length + " queries complete");
   }
 
   discoveryState.running = false;
@@ -3020,21 +3123,24 @@ async function runLiveDiscovery() {
   }
   document.getElementById("discovery-meta").innerHTML =
     "<strong>" + queries.length + "</strong> queries &middot; <strong>" + totalMs + " ms</strong> total &middot; notes auto-filled below";
-  document.getElementById("discovery-actions").innerHTML =
-    '<a href="#in-notes" id="lnk-to-notes" style="color:var(--accent);text-decoration:none;font-weight:600">Jump to notes &rarr;</a>';
 
   document.getElementById("in-notes").value = buildNotesFromResults(company, website, discoveryState.results, discoveryState.mode);
+  hideLoading();
   flashGenMeta("Discovery complete (" + discoveryState.mode + ") — click Generate Analysis.");
 }
 
 function buildNotesFromResults(company, website, resultsByQuery, mode) {
+  if (mode !== "live") {
+    return "TARGET: " + company + (website ? " (" + website + ")" : "") + "\n\n" +
+      "Live retrieval was unavailable. Paste research notes below — the engine will reason over them when you click Generate Analysis.";
+  }
   const lines = [];
   lines.push("TARGET: " + company + (website ? " (" + website + ")" : ""));
   lines.push("");
-  lines.push("LIVE RESEARCH FEED · " + (mode === "live" ? "Tavily search" : "cached real findings") + " · generated " + new Date().toLocaleString());
+  lines.push("LIVE RESEARCH FEED · Tavily search · generated " + new Date().toLocaleString());
   lines.push("");
   for (const [q, payload] of Object.entries(resultsByQuery)) {
-    lines.push("# QUERY: " + q + "  [" + payload.mode + "]");
+    lines.push("# QUERY: " + q);
     for (const r of payload.results) {
       lines.push("- " + r.title);
       if (r.url) lines.push("  " + r.url);
@@ -3043,7 +3149,7 @@ function buildNotesFromResults(company, website, resultsByQuery, mode) {
     lines.push("");
   }
   lines.push("OBSERVATIONS FOR REASONING ENGINE:");
-  lines.push("- Findings span target's own surface and adjacent ecosystem (incumbent + framework + hyperscaler).");
+  lines.push("- Findings span the target's own surface and the adjacent ecosystem.");
   lines.push("- Source URLs preserved per result for downstream evidence labeling.");
   lines.push("- Engine will weight integrations, architecture, customers, regulated, open-source, and model-partner signals.");
   return lines.join("\n");
@@ -3054,8 +3160,8 @@ function setMode(mode) {
   document.querySelectorAll(".seg-btn").forEach(b => { b.classList.toggle("active", b.getAttribute("data-mode") === mode); });
   const note = document.getElementById("mode-note");
   note.innerHTML = mode === "manual"
-    ? "Manual: the engine reasons over the pasted research only. No external retrieval is attempted."
-    : "Hybrid: combine lightweight public signals (when available) with any pasted research. The engine reasons over inputs &mdash; it does not fabricate sources.";
+    ? "Manual Notes: the engine reasons over the pasted research only. No external retrieval is attempted."
+    : "Live Search: combine lightweight public signals (when available) with any pasted research. The engine reasons over inputs &mdash; it does not fabricate sources.";
 }
 
 function openModal() { document.getElementById("workflow-modal").hidden = false; }
