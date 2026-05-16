@@ -11,24 +11,24 @@
    ============================================================ */
 
 :root {
-  --page-bg: #F7F6F2;
-  --surface: #FFFFFF;
-  --surface-alt: #FBFAF6;
-  --border: #E4E1D7;
-  --border-strong: #C7C2B2;
-  --text: #0A1F44;
-  --text-secondary: #3D4A66;
-  --text-muted: #6F7A91;
-  --accent: #0176D3;
-  --accent-hover: #014486;
-  --accent-soft: #E8F1FB;
-  --accent-bar: #032D60;
-  --good: #157347;
-  --warn: #A35200;
-  --bad: #A8261B;
-  --neutral: #6F7A91;
-  --shadow-card: 0 1px 2px rgba(10,31,68,0.04), 0 0 0 1px var(--border);
-  --shadow-elev: 0 8px 24px rgba(10,31,68,0.08), 0 0 0 1px var(--border);
+  --page-bg: #0C1119;
+  --surface: #161D2A;
+  --surface-alt: #1E2636;
+  --border: #2A3445;
+  --border-strong: #3E4B63;
+  --text: #ECEFF6;
+  --text-secondary: #B8C2D6;
+  --text-muted: #7E899F;
+  --accent: #4DA3F0;
+  --accent-hover: #7AB9F4;
+  --accent-soft: #16273D;
+  --accent-bar: #1F4373;
+  --good: #5FBF83;
+  --warn: #E3B055;
+  --bad: #E47A6E;
+  --neutral: #7E899F;
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.5), 0 0 0 1px var(--border);
+  --shadow-elev: 0 12px 32px rgba(0,0,0,0.55), 0 0 0 1px var(--border);
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   --serif: "Iowan Old Style", "Charter", "Source Serif Pro", "Georgia", serif;
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Menlo", monospace;
@@ -41,7 +41,7 @@ html, body {
   background: var(--page-bg);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 14.5px;
+  font-size: 16.5px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -56,7 +56,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(247,246,242,0.92);
+  background: rgba(12,17,25,0.92);
   backdrop-filter: saturate(180%) blur(10px);
   border-bottom: 1px solid var(--border);
 }
@@ -128,7 +128,7 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 .badge-count {
   margin-left: 6px;
   background: var(--accent-soft);
-  border: 1px solid #C7DFF3;
+  border: 1px solid rgba(77,163,240,0.35);
   color: var(--accent);
   padding: 1px 6px;
   font-size: 11px;
@@ -137,19 +137,14 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-weight: 600;
 }
 
-/* ---------- Layout ---------- */
+/* ---------- Layout (single vertical column) ---------- */
 .layout {
-  max-width: 1480px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 28px 32px 88px;
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 28px;
-  align-items: start;
+  padding: 32px 32px 96px;
+  display: block;
 }
-@media (max-width: 1024px) {
-  .layout { grid-template-columns: 1fr; }
-}
+.output-panel { min-width: 0; }
 
 /* ---------- Input panel ---------- */
 .input-panel { position: sticky; top: 84px; }
@@ -345,7 +340,7 @@ input[type="text"]:focus, textarea:focus {
 }
 .empty-title {
   font-family: var(--serif);
-  font-size: 30px;
+  font-size: 34px;
   font-weight: 500;
   letter-spacing: -0.01em;
   margin-bottom: 16px;
@@ -391,6 +386,62 @@ input[type="text"]:focus, textarea:focus {
   color: var(--text);
 }
 .empty-card p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+/* New vertical-flow step cards (replaces .empty-grid layout) */
+.empty-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.empty-step {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 22px 24px 24px;
+}
+.empty-step .empty-card-num {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin-bottom: 6px;
+}
+.empty-step h4 {
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.empty-step p {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 14px;
+  max-width: 72ch;
+}
+.empty-step p:last-child { margin-bottom: 0; }
+.step-inputs {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.step-inputs .field { margin-bottom: 14px; }
+.step-inputs .mode-note { margin: 8px 0 16px; }
+.step-actions {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.empty-saved {
+  margin-top: 12px;
+  padding: 22px 24px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.empty-saved .eyebrow { display: block; margin-bottom: 4px; }
+.empty-saved .card-help { font-size: 13px; color: var(--text-muted); margin: 0 0 12px; }
 
 .empty-workflow {
   margin: 32px 0 0;
@@ -448,7 +499,7 @@ input[type="text"]:focus, textarea:focus {
   margin: 6px 0 10px;
   font-family: var(--serif);
   font-weight: 500;
-  font-size: 34px;
+  font-size: 36px;
   letter-spacing: -0.012em;
   line-height: 1.15;
   color: var(--text);
@@ -496,11 +547,11 @@ input[type="text"]:focus, textarea:focus {
 }
 .block:last-child { border-bottom: none; }
 .block.highlight {
-  background: linear-gradient(180deg, #F5F9FD 0%, var(--surface) 60%);
+  background: linear-gradient(180deg, rgba(77,163,240,0.05) 0%, var(--surface) 60%);
   border-top: 2px solid var(--accent);
 }
 .block.block-purpose {
-  background: linear-gradient(180deg, #FBFAF3 0%, var(--surface) 100%);
+  background: linear-gradient(180deg, rgba(31,67,115,0.20) 0%, var(--surface) 100%);
   border-top: 2px solid var(--accent-bar);
   border-bottom: 1px solid var(--border-strong);
 }
@@ -679,7 +730,7 @@ input[type="text"]:focus, textarea:focus {
   color: var(--accent);
   font-weight: 700;
   background: var(--accent-soft);
-  border: 1px solid #B9D7EF;
+  border: 1px solid rgba(77,163,240,0.35);
   width: 26px;
   height: 26px;
   display: grid;
@@ -696,7 +747,7 @@ input[type="text"]:focus, textarea:focus {
 }
 .workflow-why {
   background: var(--accent-soft);
-  border: 1px solid #B9D7EF;
+  border: 1px solid rgba(77,163,240,0.35);
   border-radius: 5px;
   padding: 14px 16px;
   margin-top: 16px;
@@ -728,7 +779,7 @@ input[type="text"]:focus, textarea:focus {
 .block h2 {
   margin: 4px 0 6px;
   font-family: var(--serif);
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 500;
   letter-spacing: -0.008em;
   color: var(--text);
@@ -825,8 +876,8 @@ input[type="text"]:focus, textarea:focus {
 }
 .vs-col p { margin: 0; color: var(--text-secondary); font-size: 13.5px; }
 .vs-constraint {
-  background: #FDFAF1;
-  border: 1px solid #ECDFB7;
+  background: rgba(227,176,85,0.08);
+  border: 1px solid rgba(227,176,85,0.28);
   border-radius: 5px;
   padding: 12px 14px;
   margin: 0 0 18px;
@@ -863,13 +914,13 @@ input[type="text"]:focus, textarea:focus {
   vertical-align: middle;
   font-weight: 600;
 }
-.badge.strong, .badge.verified { color: var(--good); border-color: #B6DAC1; background: #EAF6EF; }
-.badge.medium, .badge.inferred { color: var(--warn); border-color: #ECCB97; background: #FDF6E8; }
-.badge.weak, .badge.weak-support { color: var(--bad); border-color: #E7B6B1; background: #FBEEEC; }
-.badge.needs, .badge.open { color: var(--neutral); border-color: #C7CCD7; background: #F1F2F5; }
-.badge.competitor { color: var(--bad); border-color: #E7B6B1; background: #FBEEEC; }
-.badge.complement { color: var(--good); border-color: #B6DAC1; background: #EAF6EF; }
-.badge.target { color: var(--accent); border-color: #B9D7EF; background: var(--accent-soft); }
+.badge.strong, .badge.verified { color: var(--good); border-color: rgba(95,191,131,0.35); background: rgba(95,191,131,0.10); }
+.badge.medium, .badge.inferred { color: var(--warn); border-color: rgba(227,176,85,0.35); background: rgba(227,176,85,0.10); }
+.badge.weak, .badge.weak-support { color: var(--bad); border-color: rgba(228,122,110,0.35); background: rgba(228,122,110,0.10); }
+.badge.needs, .badge.open { color: var(--neutral); border-color: rgba(126,137,159,0.35); background: rgba(126,137,159,0.10); }
+.badge.competitor { color: var(--bad); border-color: rgba(228,122,110,0.35); background: rgba(228,122,110,0.10); }
+.badge.complement { color: var(--good); border-color: rgba(95,191,131,0.35); background: rgba(95,191,131,0.10); }
+.badge.target { color: var(--accent); border-color: rgba(77,163,240,0.35); background: var(--accent-soft); }
 
 /* Durability */
 .durability {
@@ -1061,7 +1112,7 @@ input[type="text"]:focus, textarea:focus {
   border-left: 3px solid var(--bad);
   padding: 10px 0 10px 16px;
   margin-bottom: 12px;
-  background: linear-gradient(90deg, #FBEEEC 0%, transparent 50%);
+  background: linear-gradient(90deg, rgba(228,122,110,0.12) 0%, transparent 50%);
   border-radius: 0 4px 4px 0;
 }
 .risk-name {
@@ -1099,8 +1150,8 @@ input[type="text"]:focus, textarea:focus {
 
 /* Warning banner */
 .warn-banner {
-  background: #FDF6E8;
-  border: 1px solid #ECDFB7;
+  background: rgba(227,176,85,0.10);
+  border: 1px solid rgba(227,176,85,0.30);
   border-radius: 5px;
   padding: 12px 16px;
   font-size: 13px;
@@ -1111,7 +1162,7 @@ input[type="text"]:focus, textarea:focus {
 .warn-banner strong { color: var(--warn); }
 .evidence-banner {
   background: var(--accent-soft);
-  border: 1px solid #B9D7EF;
+  border: 1px solid rgba(77,163,240,0.35);
   border-radius: 5px;
   padding: 12px 16px;
   font-size: 13px;
@@ -1348,7 +1399,7 @@ input[type="text"]:focus, textarea:focus {
   color: var(--text-muted);
   white-space: nowrap;
 }
-.discovery-status.live { background: #FFF5E5; color: var(--warn); border-color: #ECCB97; }
+.discovery-status.live { background: rgba(227,176,85,0.10); color: var(--warn); border-color: rgba(227,176,85,0.35); }
 .discovery-status.done { background: #EAF6EF; color: var(--good); border-color: #B6DAC1; }
 .discovery-status.cached { background: var(--accent-soft); color: var(--accent); border-color: #B9D7EF; }
 .q-row {
@@ -1454,7 +1505,7 @@ input[type="text"]:focus, textarea:focus {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb { background: #D2CFC0; border-radius: 6px; border: 2px solid var(--page-bg); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 6px; border: 2px solid var(--page-bg); }
 ::-webkit-scrollbar-track { background: transparent; }
 </style>
 </head>
@@ -1478,64 +1529,7 @@ input[type="text"]:focus, textarea:focus {
 <main class="layout">
 
   <!-- LEFT INPUT PANEL -->
-  <aside class="input-panel">
-
-    <div class="card">
-      <div class="card-head">
-        <div class="eyebrow">01 &middot; Inputs</div>
-        <h2>Target company</h2>
-      </div>
-      <div class="card-body">
-        <label class="field">
-          <span class="field-label">Company name</span>
-          <input id="in-company" type="text" placeholder="Company name" autocomplete="off" />
-        </label>
-        <label class="field">
-          <span class="field-label">Website</span>
-          <input id="in-website" type="text" placeholder="company.com" autocomplete="off" />
-        </label>
-
-        <div class="mode-row">
-          <span class="field-label">Research mode</span>
-          <div class="seg">
-            <button class="seg-btn active" data-mode="hybrid">Live Search</button>
-            <button class="seg-btn" data-mode="manual">Manual Notes</button>
-          </div>
-        </div>
-        <p class="mode-note" id="mode-note">
-          Live Search: combine lightweight public signals (when available) with any pasted research. The engine reasons over inputs &mdash; it does not fabricate sources.
-        </p>
-
-        <label class="field">
-          <span class="field-label">
-            Pasted research <span class="field-hint">(Perplexity / NotebookLM / Tegus / customer notes / docs)</span>
-          </span>
-          <textarea id="in-notes" rows="10" placeholder="Paste any text-form research here. Developer docs, integrations, and customer notes are treated as stronger evidence than marketing copy."></textarea>
-        </label>
-
-        <div class="panel-actions">
-          <button id="btn-discover" class="btn">Run Discovery</button>
-          <button id="btn-generate" class="btn primary">Generate Analysis</button>
-          <button id="btn-clear" class="btn ghost">Clear</button>
-        </div>
-        <div id="gen-meta" class="gen-meta"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
-        <div class="eyebrow">Saved insights <span id="saved-count" class="badge-count">0</span></div>
-        <p class="card-help">Compounding strategic memory &mdash; click to reload, or export a memo.</p>
-      </div>
-      <div class="card-body">
-        <div id="saved-list" class="saved-list">
-          <div class="empty">No saved insights yet.</div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- RIGHT OUTPUT PANEL -->
+  <!-- SINGLE VERTICAL COLUMN -->
   <section class="output-panel">
 
     <div id="empty-state" class="empty-state">
@@ -1571,21 +1565,70 @@ input[type="text"]:focus, textarea:focus {
       </div>
 
       <hr class="empty-divider" />
-      <div class="empty-grid">
-        <div class="empty-card">
+
+      <div class="empty-flow">
+
+        <div class="empty-step">
           <div class="empty-card-num">01</div>
           <h4>Load or paste</h4>
-          <p>Enter a target company and website. Click <strong>Run Discovery</strong> to pull public-source evidence, or switch to <strong>Manual Notes</strong> and paste your own research.</p>
+          <p>Enter a target company and website. Toggle <strong>Live Search</strong> to pull public-source evidence via Tavily, or switch to <strong>Manual Notes</strong> and paste your own primary research from Perplexity, customer calls, or product docs.</p>
+
+          <div class="step-inputs">
+            <label class="field">
+              <span class="field-label">Company name</span>
+              <input id="in-company" type="text" placeholder="Company name" autocomplete="off" />
+            </label>
+            <label class="field">
+              <span class="field-label">Website</span>
+              <input id="in-website" type="text" placeholder="company.com" autocomplete="off" />
+            </label>
+
+            <div class="mode-row">
+              <span class="field-label">Research mode</span>
+              <div class="seg">
+                <button class="seg-btn active" data-mode="hybrid">Live Search</button>
+                <button class="seg-btn" data-mode="manual">Manual Notes</button>
+              </div>
+            </div>
+            <p class="mode-note" id="mode-note">
+              Live Search: combine lightweight public signals (when available) with any pasted research. The engine reasons over inputs &mdash; it does not fabricate sources.
+            </p>
+
+            <label class="field">
+              <span class="field-label">
+                Pasted research <span class="field-hint">(Perplexity / NotebookLM / Tegus / customer notes / docs)</span>
+              </span>
+              <textarea id="in-notes" rows="8" placeholder="Paste any text-form research here. Developer docs, integrations, and customer notes are treated as stronger evidence than marketing copy."></textarea>
+            </label>
+          </div>
         </div>
-        <div class="empty-card">
+
+        <div class="empty-step">
           <div class="empty-card-num">02</div>
           <h4>Generate analysis</h4>
-          <p>Nine MECE sections: product decomposition, adjacencies, incumbent and startup expansion, possibility vs likelihood, durability, evidence quality, falsifiability, diligence questions.</p>
+          <p>Click <strong>Run Discovery</strong> to populate the Research Log with live public-source evidence (Live Search mode only). Then click <strong>Generate Analysis</strong> to produce the nine MECE sections: product decomposition, adjacencies, incumbent and startup expansion, possibility vs likelihood, durability, evidence quality, falsifiability, and open diligence questions.</p>
+
+          <div class="step-actions panel-actions">
+            <button id="btn-discover" class="btn">Run Discovery</button>
+            <button id="btn-generate" class="btn primary">Generate Analysis</button>
+            <button id="btn-clear" class="btn ghost">Clear</button>
+          </div>
+          <div id="gen-meta" class="gen-meta"></div>
         </div>
-        <div class="empty-card">
+
+        <div class="empty-step">
           <div class="empty-card-num">03</div>
-          <h4>Save &amp; export</h4>
-          <p>Persist insights to local storage. Export a clean Markdown memo for the partner meeting.</p>
+          <h4>Export insights into PDF to add to diligence workstreams</h4>
+          <p>Once analysis is generated, save the insight to local strategic memory or export a polished PDF memo ready to drop into a partner thread, deal room, or IC deck. Saved insights compound over time as the ecosystem moves and prior conclusions can be tested against subsequent events.</p>
+        </div>
+
+      </div>
+
+      <div class="empty-saved">
+        <div class="eyebrow">Saved insights <span id="saved-count" class="badge-count">0</span></div>
+        <p class="card-help">Compounding strategic memory &mdash; click to reload, or export a memo.</p>
+        <div id="saved-list" class="saved-list">
+          <div class="empty">No saved insights yet.</div>
         </div>
       </div>
     </div>
@@ -2392,7 +2435,7 @@ function cryptoId() {
 /* ---------- Rendering ---------- */
 
 function renderAnalysis(a) {
-  document.getElementById("empty-state").hidden = true;
+  // Empty state stays visible (it's the input panel now) — analysis appears below.
   document.getElementById("analysis").hidden = false;
   document.getElementById("out-company-name").textContent = a.company;
   const metaEl = document.getElementById("out-meta");
