@@ -122,16 +122,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   font-weight: 600;
 }
 .btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
-.btn.demo {
-  background: var(--accent-bar);
-  color: white;
-  border-color: var(--accent-bar);
-  font-weight: 600;
-  width: 100%;
-  justify-content: center;
-  padding: 11px 14px;
-}
-.btn.demo:hover { background: #051E40; border-color: #051E40; }
 .btn.ghost { background: transparent; }
 .btn.small { font-size: 12px; padding: 6px 10px; }
 
@@ -199,20 +189,6 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
   line-height: 1.5;
 }
 
-/* Demo button block */
-.demo-block {
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, #FCFBF7, var(--surface));
-}
-.demo-help {
-  margin: 10px 0 0;
-  font-size: 12px;
-  color: var(--text-muted);
-  text-align: center;
-  line-height: 1.5;
-}
 
 /* Fields */
 .field { display: block; margin-bottom: 12px; }
@@ -282,7 +258,24 @@ input[type="text"]:focus, textarea:focus {
   line-height: 1.5;
 }
 
-.panel-actions { display: flex; gap: 8px; margin-top: 8px; }
+.panel-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  width: 100%;
+}
+.panel-actions .btn { width: 100%; justify-content: center; }
+.panel-actions .btn.ghost {
+  width: auto;
+  align-self: flex-end;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-color: var(--border);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.panel-actions .btn.ghost:hover { color: var(--bad); border-color: var(--bad); background: transparent; }
 .gen-meta {
   margin-top: 10px;
   font-family: var(--mono);
@@ -1163,20 +1156,23 @@ input[type="text"]:focus, textarea:focus {
 }
 .modal-callout strong { color: var(--text); }
 
-/* Workflow visual */
+/* Workflow visual — vertical stack */
 .workflow {
   display: flex;
+  flex-direction: column;
   align-items: stretch;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 8px 4px 16px;
+  gap: 8px;
+  padding: 8px 0 16px;
+  max-width: 720px;
+  margin: 0 auto;
 }
 .wf-stage {
-  flex: 0 0 220px;
+  flex: 1 1 auto;
+  width: 100%;
   background: var(--surface-alt);
   border: 1px solid var(--border);
   border-radius: 5px;
-  padding: 16px;
+  padding: 16px 18px;
 }
 .wf-num {
   font-family: var(--mono);
@@ -1204,8 +1200,8 @@ input[type="text"]:focus, textarea:focus {
 .wf-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
 .wf-arrow {
   align-self: center;
-  width: 18px;
-  height: 1px;
+  width: 1px;
+  height: 18px;
   background: var(--border-strong);
   position: relative;
   flex: 0 0 18px;
@@ -1213,13 +1209,13 @@ input[type="text"]:focus, textarea:focus {
 .wf-arrow::after {
   content: "";
   position: absolute;
-  right: -1px;
-  top: -3px;
+  bottom: -1px;
+  left: -3px;
   width: 0;
   height: 0;
-  border-left: 6px solid var(--border-strong);
-  border-top: 3px solid transparent;
-  border-bottom: 3px solid transparent;
+  border-top: 6px solid var(--border-strong);
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
 }
 
 .muted { color: var(--text-muted); }
@@ -1412,29 +1408,17 @@ input[type="text"]:focus, textarea:focus {
 
     <div class="card">
       <div class="card-head">
-        <div class="eyebrow">Demo</div>
-        <h2>Live presentation</h2>
-        <p class="card-help">One-click prefill of company, website, and pasted research notes for the Keycard.ai investor demo.</p>
-      </div>
-      <div class="demo-block">
-        <button id="btn-demo-keycard" class="btn demo">Load Keycard Demo</button>
-        <p class="demo-help">Loads inputs &middot; then click <strong>Generate Analysis</strong></p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head">
         <div class="eyebrow">01 &middot; Inputs</div>
         <h2>Target company</h2>
       </div>
       <div class="card-body">
         <label class="field">
           <span class="field-label">Company name</span>
-          <input id="in-company" type="text" placeholder="e.g. Keycard" autocomplete="off" />
+          <input id="in-company" type="text" placeholder="Company name" autocomplete="off" />
         </label>
         <label class="field">
           <span class="field-label">Website</span>
-          <input id="in-website" type="text" placeholder="keycard.ai" autocomplete="off" />
+          <input id="in-website" type="text" placeholder="company.com" autocomplete="off" />
         </label>
 
         <div class="mode-row">
@@ -1493,12 +1477,12 @@ input[type="text"]:focus, textarea:focus {
         <div class="empty-card">
           <div class="empty-card-num">01</div>
           <h4>Load or paste</h4>
-          <p>Use <strong>Load Keycard Demo</strong> for a one-click investor demo, or enter any company and paste research notes.</p>
+          <p>Enter a target company and website. Click <strong>Run Live Discovery</strong> to pull public-source evidence, or paste your own research notes.</p>
         </div>
         <div class="empty-card">
           <div class="empty-card-num">02</div>
           <h4>Generate analysis</h4>
-          <p>11 structured sections: product decomposition, adjacencies, incumbent vs startup expansion, durability rating, diligence questions.</p>
+          <p>Nine MECE sections: product decomposition, adjacencies, incumbent and startup expansion, possibility vs likelihood, durability, evidence quality, falsifiability, diligence questions.</p>
         </div>
         <div class="empty-card">
           <div class="empty-card-num">03</div>
@@ -1522,161 +1506,97 @@ input[type="text"]:focus, textarea:focus {
       </div>
 
       <nav class="toc">
-        <a href="#sec-purpose">00 Purpose</a>
-        <a href="#sec-decomp">01 Decomposition</a>
-        <a href="#sec-tech-arch">02 Architecture</a>
-        <a href="#sec-workflow">03 Workflow</a>
-        <a href="#sec-ecosystem">04 Ecosystem</a>
-        <a href="#sec-incumbent-map">05 Incumbents</a>
-        <a href="#sec-vs">06 Possibility</a>
-        <a href="#sec-durability">07 Durability</a>
-        <a href="#sec-evidence">08 Evidence</a>
-        <a href="#sec-risks">09 Risks</a>
-        <a href="#sec-questions">10 Questions</a>
-        <a href="#sec-change">11 Conditions</a>
+        <a href="#sec-decomp">01 Product</a>
+        <a href="#sec-ecosystem">02 Adjacencies</a>
+        <a href="#sec-incumbent-map">03 Incumbents</a>
+        <a href="#sec-startups">04 Startups</a>
+        <a href="#sec-vs">05 Possible vs Likely</a>
+        <a href="#sec-durability">06 Durability</a>
+        <a href="#sec-evidence">07 Evidence</a>
+        <a href="#sec-change">08 Falsifiability</a>
+        <a href="#sec-questions">09 Diligence</a>
         <a href="#sec-log">Research Log</a>
       </nav>
-
-      <section id="sec-purpose" class="block block-purpose">
-        <div class="block-head">
-          <div class="block-num">00</div>
-          <h2>Purpose of This Engine</h2>
-          <div class="block-sub">Internal investment tooling. Why differentiation analysis in AI markets requires modeling ecosystem convergence, not just current capability.</div>
-        </div>
-        <div class="block-body purpose-body">
-          <p>Differentiation analysis in AI markets is hard because ecosystems converge faster than they used to. A startup&rsquo;s wedge today is often a feature of a hyperscaler runtime in eighteen months. The interesting investor question is rarely &ldquo;is this company building something useful&rdquo; &mdash; it is &ldquo;does the wedge survive contact with the incumbents and protocols that will absorb adjacent value over the next two to three years.&rdquo;</p>
-          <p>Most research tools summarize what a company does today. This engine attempts to model durability under ecosystem convergence. It works on three premises:</p>
-          <ul>
-            <li><strong>Technical possibility is not strategic likelihood.</strong> Most incumbents are technically capable of shipping the adjacent product. The question that matters is whether their data model, sales motion, and ecosystem incentives actually push them to do it well. Capability is cheap; intent is not.</li>
-            <li><strong>Ecosystem incentives gate strategic moves.</strong> Cross-platform neutrality is anti-incentive for hyperscalers. Identity, observability, and runtime primitives get bundled almost automatically. Standards commoditize the layer beneath them and push value upward &mdash; vendors who anchor at the spec level retain optionality longer than vendors who anchor at the SDK level.</li>
-            <li><strong>Synthesis beats retrieval.</strong> A list of links is not analysis. The engine prefers a structured decomposition &mdash; what the company is architecturally, what control point it owns, what it depends on, what becomes hard for incumbents to replicate &mdash; with the underlying sources cited <em>below</em> the reasoning as supporting evidence.</li>
-          </ul>
-          <p>The engine produces eleven structured sections: architectural decomposition, technical architecture, inferred backend workflow, ecosystem positioning, incumbent expansion map, possibility-versus-likelihood, durability assessment, evidence strength, strategic risks, open diligence questions, and the conditions under which the conclusion would change. Each section separates inference from validated evidence. Conclusions are explicitly labeled. The engine prefers honest uncertainty to false confidence.</p>
-          <p>Saved insights persist locally. Over many companies, the saved set becomes a longitudinal record of how the engine read the market &mdash; useful as the ecosystem moves and prior conclusions can be tested against subsequent events.</p>
-        </div>
-      </section>
 
       <section id="sec-decomp" class="block">
         <div class="block-head">
           <div class="block-num">01</div>
-          <h2>Company Decomposition</h2>
-          <div class="block-sub">What the company is architecturally, what control point it is attempting to own, what the strategic implication is. Synthesized reasoning &mdash; not a list of features.</div>
+          <h2>Product Decomposition</h2>
+          <div class="block-sub">What the company actually does, in semi-technical terms. Product layer, workflow ownership, technical wedge, buyer, core dependency. No competitor trajectories here.</div>
         </div>
         <div id="out-decomp" class="block-body"></div>
       </section>
 
-      <section id="sec-tech-arch" class="block">
-        <div class="block-head">
-          <div class="block-num">02</div>
-          <h2>Technical Architecture</h2>
-          <div class="block-sub">Inferred primitives, standards and protocols, runtime position, deployment model, integration pattern.</div>
-        </div>
-        <div id="out-tech-arch" class="block-body"></div>
-      </section>
-
-      <section id="sec-workflow" class="block">
-        <div class="block-head">
-          <div class="block-num">03</div>
-          <h2>Backend Workflow Inference</h2>
-          <div class="block-sub">What is likely happening end-to-end in production, step by step. Inferred from the architectural shape.</div>
-        </div>
-        <div id="out-workflow" class="block-body"></div>
-      </section>
-
-      <section id="sec-product-legacy" class="block" style="display:none">
-        <div class="block-head">
-          <div class="block-num">01-legacy</div>
-          <h2>Legacy decomposition output</h2>
-        </div>
-        <div id="out-product" class="block-body"></div>
-      </section>
-
       <section id="sec-ecosystem" class="block">
         <div class="block-head">
-          <div class="block-num">04</div>
-          <h2>Ecosystem Positioning</h2>
-          <div class="block-sub">Where the company sits relative to incumbents, adjacent startups, runtime providers, and standards bodies. Only credible convergence candidates &mdash; not a market map.</div>
+          <div class="block-num">02</div>
+          <h2>Strategic Adjacencies</h2>
+          <div class="block-sub">Who is adjacent, why they are adjacent, why they matter. Identification only &mdash; depth analysis follows in the next two sections.</div>
         </div>
         <div id="out-adjacencies" class="block-body"></div>
       </section>
 
       <section id="sec-incumbent-map" class="block">
         <div class="block-head">
-          <div class="block-num">05</div>
-          <h2>Incumbent Expansion Map</h2>
-          <div class="block-sub">Per incumbent: capability vs strategic motivation, recent product / press / protocol signals, structural disincentives, distribution advantage, and partner-or-compete classification.</div>
+          <div class="block-num">03</div>
+          <h2>Incumbent Expansion Analysis</h2>
+          <div class="block-sub">Per incumbent: technical capability, strategic incentive, distribution advantage, architectural and incentive constraints. No restatement of target product.</div>
         </div>
         <div id="out-incumbents" class="block-body"></div>
       </section>
 
-      <section id="sec-startups" class="block" style="display:none">
+      <section id="sec-startups" class="block">
         <div class="block-head">
-          <div class="block-num">04-merged</div>
-          <h2>Startup expansion (merged into Ecosystem Positioning)</h2>
+          <div class="block-num">04</div>
+          <h2>Startup Expansion Analysis</h2>
+          <div class="block-sub">Per adjacent startup: wedge, likely roadmap direction, overlap / complement / acquisition logic.</div>
         </div>
         <div id="out-startups" class="block-body"></div>
       </section>
 
       <section id="sec-vs" class="block highlight">
         <div class="block-head">
-          <div class="block-num">06</div>
-          <h2>Strategic vs Technical Possibility</h2>
-          <div class="block-sub">The decisive section. Capability is not intent. Ecosystem incentives gate strategic moves.</div>
+          <div class="block-num">05</div>
+          <h2>Technically Possible vs Strategically Likely</h2>
+          <div class="block-sub">The decisive distinction. What actors could technically build vs what they are actually incentivized to ship. Why strategic incentives may prevent technically possible moves.</div>
         </div>
         <div id="out-vs" class="block-body"></div>
       </section>
 
       <section id="sec-durability" class="block">
         <div class="block-head">
-          <div class="block-num">07</div>
-          <h2>Durability Assessment</h2>
-          <div class="block-sub">Investor synthesis. Does the wedge strengthen or weaken as ecosystems converge?</div>
+          <div class="block-num">06</div>
+          <h2>Differentiation Durability</h2>
+          <div class="block-sub">Final synthesis only. High / Medium / Low call, what is durable, what is vulnerable, confidence level. No restatement of prior sections.</div>
         </div>
         <div id="out-durability" class="block-body"></div>
       </section>
 
       <section id="sec-evidence" class="block">
         <div class="block-head">
-          <div class="block-num">08</div>
-          <h2>Evidence Strength</h2>
-          <div class="block-sub">Truth hierarchy: developer docs &gt; product docs &gt; GitHub / changelogs &gt; technical blogs &gt; customer evidence &gt; hiring &gt; marketing.</div>
+          <div class="block-num">07</div>
+          <h2>Evidence Quality &amp; Reasoning Signals</h2>
+          <div class="block-sub">What the engine relied on. Strong evidence, weak evidence, inferred claims, missing evidence. No new strategic claims here.</div>
         </div>
         <div id="out-evidence" class="block-body"></div>
       </section>
 
-      <section id="sec-risks" class="block">
-        <div class="block-head">
-          <div class="block-num">09</div>
-          <h2>Strategic Risks</h2>
-          <div class="block-sub">Commoditization, incumbent absorption, category ambiguity, distribution asymmetry, hyperscaler bundling, protocol standardization.</div>
-        </div>
-        <div id="out-risks" class="block-body"></div>
-      </section>
-
-      <section id="sec-questions" class="block">
-        <div class="block-head">
-          <div class="block-num">10</div>
-          <h2>Open Diligence Questions</h2>
-          <div class="block-sub">Investor-grade questions across architecture, deployment, GTM, ecosystem, displacement risk.</div>
-        </div>
-        <div id="out-questions" class="block-body"></div>
-      </section>
-
       <section id="sec-change" class="block">
         <div class="block-head">
-          <div class="block-num">11</div>
-          <h2>What Would Change This Conclusion</h2>
-          <div class="block-sub">For each major synthesis: what strengthens the thesis, what weakens it, what would invalidate it. The conditions under which the conclusion should be re-opened.</div>
+          <div class="block-num">08</div>
+          <h2>What Would Change the Conclusion</h2>
+          <div class="block-sub">Falsifiability of the analysis. What would strengthen the conclusion, what would weaken it, what evidence is needed next.</div>
         </div>
         <div id="out-change" class="block-body"></div>
       </section>
 
-      <section id="sec-reasoning-legacy" class="block" style="display:none">
+      <section id="sec-questions" class="block">
         <div class="block-head">
-          <div class="block-num">legacy</div>
-          <h2>Reasoning signals (folded into 01 / 03 narratives)</h2>
+          <div class="block-num">09</div>
+          <h2>Open Diligence Questions</h2>
+          <div class="block-sub">Next-step investor questions across product / architecture, GTM, buyer / budget, competitive dynamics.</div>
         </div>
-        <div id="out-reasoning" class="block-body"></div>
+        <div id="out-questions" class="block-body"></div>
       </section>
 
       <section id="sec-log" class="block block-appendix">
@@ -1702,7 +1622,7 @@ input[type="text"]:focus, textarea:focus {
             </div>
           </div>
           <div id="research-log-empty" class="muted" style="font-size:13px;padding:8px 0">
-            No retrieval yet for this analysis. Click <strong>Run Live Discovery</strong> or <strong>Load Keycard Demo</strong> to populate the log.
+            No retrieval yet for this analysis. Click <strong>Run Live Discovery</strong> to populate the log with public-source evidence.
           </div>
         </div>
       </section>
@@ -1738,7 +1658,7 @@ input[type="text"]:focus, textarea:focus {
         <div class="wf-arrow"></div>
         <div class="wf-stage"><div class="wf-num">06</div><div class="wf-name">Claude</div><div class="wf-role">Memo synthesis</div><div class="wf-desc">Tighten investor-facing reasoning, voice, and durability claims.</div></div>
         <div class="wf-arrow"></div>
-        <div class="wf-stage"><div class="wf-num">07</div><div class="wf-name">Wispr</div><div class="wf-role">Voice capture</div><div class="wf-desc">Capture call observations as input back into the reasoning loop.</div></div>
+        <div class="wf-stage"><div class="wf-num">07</div><div class="wf-name">Wispr &amp; Granola</div><div class="wf-role">Voice &amp; meeting capture</div><div class="wf-desc">Wispr captures voice memos and live dictation. Granola captures call transcripts and meeting notes. Both feed observations back into the reasoning loop as fresh evidence.</div></div>
       </div>
       <div class="modal-callout">
         <strong>Note.</strong> This prototype focuses on lightweight public evidence retrieval and strategic reasoning workflow architecture. A future version would connect live research systems, customer intelligence platforms, and persistent strategic memory infrastructure.
@@ -2269,7 +2189,7 @@ const PROFILES = {
 };
 
 const CATEGORY_KEYWORDS = {
-  agent_identity: ["agent identity","agent auth","agent authorization","agent access","auth for agents","identity for agents","scoped credentials","agent delegation","agent permissions","agent oauth","non-human identity","machine identity for ai","keycard","anon.com","auth for ai","agent authn","agent authz"],
+  agent_identity: ["agent identity","agent auth","agent authorization","agent access","auth for agents","identity for agents","scoped credentials","agent delegation","agent permissions","agent oauth","non-human identity","machine identity for ai","auth for ai","agent authn","agent authz"],
   agent_observability: ["observability","tracing","evals","evaluation","llm observability","agent observability","prompt management","prompt tracing","trace store","langsmith","langfuse","helicone","arize","braintrust","patronus","humanloop","galileo","regression detection","online eval","offline eval"],
   voice_agent: ["voice agent","voice ai","asr","tts","speech-to-text","text-to-speech","speech to speech","telephony","contact center","ccaas","twilio","vapi","retell","bland","elevenlabs","deepgram","assemblyai","ivr","inbound calls","outbound calls"],
   code_ai: ["code completion","code agent","swe agent","ide","developer tool","code review ai","copilot","cursor","codeium","windsurf","devin","cognition","aider","sweep","background agent for code","ai pair programmer","autonomous swe"]
@@ -2699,118 +2619,256 @@ function renderSavedList() {
 }
 
 /* ---------- Export ---------- */
+/* ---------- Export → PDF via browser print dialog ---------- */
+
 function exportMemo(a) {
-  const lines = [];
-  const heading = (t) => lines.push("", "## " + t, "");
-  const sub = (t) => lines.push("", "### " + t);
-  const item = (k, v) => lines.push("- **" + k + ":** " + v);
-
-  lines.push("# " + a.company + " — Differentiation Analysis");
-  lines.push("");
-  lines.push("*Category: " + a.categoryLabel + "*  ");
-  lines.push("*Generated: " + formatTimestamp(a.generated_at) + "*  ");
-  lines.push("*Mode: " + (a.mode === "manual" ? "Manual" : "Hybrid") + "*  ");
-  if (a.website) lines.push("*Website: " + a.website + "*  ");
-  lines.push("");
-  lines.push("> Reasoning skeleton produced by the Differentiation Reasoning Engine. No live web retrieval performed; conclusions are explicitly marked as Inferred / Weakly Supported / Open Question.");
-
-  heading("01 Semi-Technical Product Decomposition");
-  const p = a.profile.product;
-  item("Technical layer", p.technical_layer);
-  item("Runtime position", p.runtime_position);
-  item("Workflow ownership", p.workflow_ownership);
-  item("Deployment", p.deployment_assumption);
-  item("Likely buyer", p.likely_buyer);
-  item("Architectural wedge", p.architectural_wedge);
-  item("AI dependency", p.ai_dependency);
-  item("Stack position", p.stack_position);
-
-  heading("02 Strategic Adjacencies");
-  sub("Incumbents with convergence pressure"); a.profile.adjacencies.incumbents.forEach(i => lines.push("- **" + i.name + "** — " + i.note));
-  sub("Adjacent startups"); a.profile.adjacencies.startups.forEach(i => lines.push("- **" + i.name + "** — " + i.note));
-  sub("Platform / runtime adjacencies"); a.profile.adjacencies.platforms.forEach(i => lines.push("- **" + i.name + "** — " + i.note));
-
-  heading("03 Incumbent Expansion Analysis");
-  a.profile.incumbents.forEach(i => {
-    sub(i.name);
-    item("Today", i.today);
-    item("Technically capable of", i.capable_of);
-    item("Strategically likely to", i.likely_to);
-    item("Architecture constraints", i.architecture_constraints);
-    item("Ecosystem incentives", i.ecosystem_incentives);
-    item("Distribution", i.distribution);
-  });
-
-  heading("04 Startup Expansion Analysis");
-  a.profile.startups.forEach(s => {
-    sub(s.name + " — " + roleLabel(s.role));
-    item("Wedge", s.wedge);
-    item("Likely roadmap", s.roadmap);
-    item("Convergence risk", s.convergence_risk);
-  });
-
-  heading("05 Technically Possible vs Strategically Likely");
-  a.profile.vs_analysis.forEach(v => {
-    sub(v.actor);
-    item("Technically possible", v.possible);
-    item("Strategically likely", v.likely);
-    item("Constraint", v.constraint);
-  });
-
-  heading("06 Differentiation Durability");
-  const d = a.profile.durability;
-  lines.push("**Level: " + d.level.toUpperCase() + "**");
-  lines.push("");
-  lines.push(d.differentiated_today);
-  sub("Durable parts"); d.durable_parts.forEach(x => lines.push("- " + x));
-  sub("Commoditizing parts"); d.commoditizing_parts.forEach(x => lines.push("- " + x));
-  sub("Absorbable parts"); d.absorbable_parts.forEach(x => lines.push("- " + x));
-  sub("Survivability moves"); d.survivability_moves.forEach(x => lines.push("- " + x));
-  lines.push("");
-  lines.push("**Confidence:** " + d.confidence);
-
-  heading("07 Reasoning Signals");
-  a.profile.reasoning.forEach(r => {
-    lines.push("- **" + r.conclusion + "**");
-    lines.push("  - Signals: " + r.signals.join(", "));
-  });
-
-  heading("08 Evidence Strength");
-  a.evidence.forEach(e => lines.push("- " + e.claim + "  *(" + strengthLabel(e.level) + " / " + labelLabel(e.label) + ")*"));
-
-  heading("09 What Would Change This Conclusion?");
-  a.changes.forEach(c => {
-    sub(c.thesis);
-    item("Strengthens", c.strengthen);
-    item("Weakens", c.weaken);
-    item("Invalidates", c.invalidate);
-  });
-
-  heading("10 Strategic Risks");
-  a.profile.risks.forEach(r => lines.push("- **" + r.name + ":** " + r.detail));
-
-  heading("11 Open Diligence Questions");
-  a.profile.questions.forEach((q, idx) => lines.push((idx + 1) + ". " + q));
-
-  if (a.notes && a.notes.trim().length) {
-    heading("Appendix — User-Provided Research Notes");
-    lines.push("```");
-    lines.push(a.notes);
-    lines.push("```");
+  const html = buildPrintableMemoHTML(a);
+  const w = window.open("", "_blank");
+  if (!w) {
+    flashGenMeta("Pop-up blocked. Allow pop-ups for this site, then click Export Memo again.");
+    return;
   }
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  const trigger = () => { try { w.focus(); w.print(); } catch (e) { /* user can print manually */ } };
+  if (w.document.readyState === "complete") setTimeout(trigger, 250);
+  else w.addEventListener("load", () => setTimeout(trigger, 250));
+  flashGenMeta("Print dialog opening — choose 'Save as PDF' as the destination.");
+}
 
-  const text = lines.join("\n");
-  const blob = new Blob([text], { type: "text/markdown" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  const slug = (a.company || "memo").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  link.href = url;
-  link.download = slug + "-differentiation-memo.md";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-  flashGenMeta("Exported memo.");
+function buildPrintableMemoHTML(a) {
+  const esc = escapeHTML;
+  const p = a.profile || {};
+  const meta = [];
+  if (a.website) meta.push(esc(a.website));
+  meta.push(esc(a.categoryLabel || ""));
+  meta.push("Generated " + esc(formatTimestamp(a.generated_at)));
+  meta.push("Mode: " + esc(a.mode === "manual" ? "Manual" : "Hybrid"));
+
+  const section = (num, title, body) =>
+    '<section class="memo-section"><h2><span class="memo-num">' + esc(num) + '</span>' + esc(title) + '</h2>' + body + '</section>';
+
+  return '<!DOCTYPE html><html lang="en"><head>' +
+    '<meta charset="utf-8">' +
+    '<title>' + esc(a.company) + ' — Differentiation Memo</title>' +
+    '<style>' + printMemoStyles() + '</style>' +
+    '</head><body>' +
+    '<header class="memo-header">' +
+      '<div class="memo-eyebrow">Differentiation Analysis</div>' +
+      '<h1>' + esc(a.company) + '</h1>' +
+      '<div class="memo-meta">' + meta.join(' &middot; ') + '</div>' +
+    '</header>' +
+    '<p class="memo-disclaimer">Synthesized reasoning produced by the Differentiation Reasoning Engine. Conclusions are explicitly labeled inferred / weakly supported / open. Sources cited below the reasoning, not above it.</p>' +
+    section('01', 'Product Decomposition', memoDecomp(p, a.company)) +
+    section('02', 'Strategic Adjacencies', memoAdjacencies(p)) +
+    section('03', 'Incumbent Expansion Analysis', memoIncumbents(p)) +
+    section('04', 'Startup Expansion Analysis', memoStartups(p)) +
+    section('05', 'Technically Possible vs Strategically Likely', memoVs(p)) +
+    section('06', 'Differentiation Durability', memoDurability(p)) +
+    section('07', 'Evidence Quality & Reasoning Signals', memoEvidence(a.evidence)) +
+    section('08', 'What Would Change the Conclusion', memoChange(a.changes)) +
+    section('09', 'Open Diligence Questions', memoQuestions(p)) +
+    memoSourcesAppendix() +
+    '</body></html>';
+}
+
+function memoDecomp(p, company) {
+  const esc = escapeHTML;
+  let out = "";
+  const d = p.decomposition;
+  if (d) {
+    out += '<p class="memo-headline">' + esc(d.headline || "") + '</p>';
+    out += (d.paragraphs || []).map(x => '<p>' + esc(x) + '</p>').join("");
+    out += '<dl class="memo-dl">' +
+      (d.control_point ? '<dt>Control point</dt><dd>' + esc(d.control_point) + '</dd>' : '') +
+      (d.architectural_role ? '<dt>Architectural role</dt><dd>' + esc(d.architectural_role) + '</dd>' : '') +
+      (d.strategic_implication ? '<dt>Strategic implication</dt><dd>' + esc(d.strategic_implication) + '</dd>' : '') +
+    '</dl>';
+  }
+  const t = p.technical_architecture;
+  if (t) {
+    out += '<h3>Technical architecture</h3>';
+    if (t.intro) out += '<p>' + esc(t.intro) + '</p>';
+    if (t.primitives && t.primitives.length) {
+      out += '<h4>Likely primitives</h4><ul>' + t.primitives.map(x => '<li>' + esc(x) + '</li>').join("") + '</ul>';
+    }
+    if (t.standards_protocols && t.standards_protocols.length) {
+      out += '<h4>Standards / protocols</h4><ul>' + t.standards_protocols.map(x => '<li>' + esc(x) + '</li>').join("") + '</ul>';
+    }
+    out += '<dl class="memo-dl">' +
+      (t.runtime_position ? '<dt>Runtime position</dt><dd>' + esc(t.runtime_position) + '</dd>' : '') +
+      (t.deployment_model ? '<dt>Deployment</dt><dd>' + esc(t.deployment_model) + '</dd>' : '') +
+      (t.integration_patterns ? '<dt>Integration</dt><dd>' + esc(t.integration_patterns) + '</dd>' : '') +
+    '</dl>';
+  }
+  const w = p.backend_workflow;
+  if (w) {
+    out += '<h3>Backend workflow</h3>';
+    if (w.summary) out += '<p>' + esc(w.summary) + '</p>';
+    if (w.steps && w.steps.length) {
+      out += '<ol>' + w.steps.map(s => '<li>' + esc(s) + '</li>').join("") + '</ol>';
+    }
+    if (w.why_it_matters) out += '<p class="memo-callout"><strong>Why this matters.</strong> ' + esc(w.why_it_matters) + '</p>';
+  }
+  if (!out) {
+    const prod = p.product || {};
+    out = '<p>' + esc(prod.architectural_wedge || (company + " — decomposition not yet authored for this category.")) + '</p>';
+  }
+  return out;
+}
+
+function memoAdjacencies(p) {
+  const esc = escapeHTML;
+  const adj = p.adjacencies || {};
+  const block = (title, items) => {
+    if (!items || !items.length) return "";
+    return '<h3>' + esc(title) + '</h3><ul>' +
+      items.map(i => '<li><strong>' + esc(i.name) + '</strong> &mdash; ' + esc(i.note) + '</li>').join("") +
+    '</ul>';
+  };
+  return block("Incumbents with convergence pressure", adj.incumbents) +
+         block("Adjacent startups", adj.startups) +
+         block("Platforms and runtimes", adj.platforms);
+}
+
+function memoIncumbents(p) {
+  const esc = escapeHTML;
+  return (p.incumbents || []).map(i =>
+    '<div class="memo-card">' +
+      '<h3>' + esc(i.name) + '</h3>' +
+      '<dl class="memo-dl">' +
+        '<dt>Today</dt><dd>' + esc(i.today) + '</dd>' +
+        '<dt>Technically capable of</dt><dd>' + esc(i.capable_of) + '</dd>' +
+        '<dt>Strategically likely to</dt><dd>' + esc(i.likely_to) + '</dd>' +
+        '<dt>Architecture constraints</dt><dd>' + esc(i.architecture_constraints) + '</dd>' +
+        '<dt>Ecosystem incentives</dt><dd>' + esc(i.ecosystem_incentives) + '</dd>' +
+        '<dt>Distribution</dt><dd>' + esc(i.distribution) + '</dd>' +
+      '</dl>' +
+    '</div>'
+  ).join("");
+}
+
+function memoStartups(p) {
+  const esc = escapeHTML;
+  return (p.startups || []).map(s =>
+    '<div class="memo-card">' +
+      '<h3>' + esc(s.name) + ' <span class="memo-role">' + esc(roleLabel(s.role)) + '</span></h3>' +
+      '<dl class="memo-dl">' +
+        '<dt>Wedge</dt><dd>' + esc(s.wedge) + '</dd>' +
+        '<dt>Likely roadmap</dt><dd>' + esc(s.roadmap) + '</dd>' +
+        '<dt>Convergence risk</dt><dd>' + esc(s.convergence_risk) + '</dd>' +
+      '</dl>' +
+    '</div>'
+  ).join("");
+}
+
+function memoVs(p) {
+  const esc = escapeHTML;
+  return (p.vs_analysis || []).map(v =>
+    '<div class="memo-card">' +
+      '<h3>' + esc(v.actor) + '</h3>' +
+      '<h4>Technically possible</h4><p>' + esc(v.possible) + '</p>' +
+      '<h4>Strategically likely</h4><p>' + esc(v.likely) + '</p>' +
+      '<p class="memo-callout"><strong>Constraint.</strong> ' + esc(v.constraint) + '</p>' +
+    '</div>'
+  ).join("");
+}
+
+function memoDurability(p) {
+  const esc = escapeHTML;
+  const d = p.durability;
+  if (!d) return '<p>&mdash;</p>';
+  const level = (d.level || "low").toUpperCase();
+  const ul = (arr) => '<ul>' + (arr || []).map(x => '<li>' + esc(x) + '</li>').join("") + '</ul>';
+  return '<p class="memo-headline">Durability: ' + esc(level) + '</p>' +
+    '<p>' + esc(d.differentiated_today || "") + '</p>' +
+    '<h4>Durable</h4>' + ul(d.durable_parts) +
+    '<h4>Likely to commoditize</h4>' + ul(d.commoditizing_parts) +
+    '<h4>Likely to be absorbed</h4>' + ul(d.absorbable_parts) +
+    '<h4>Survivability moves</h4>' + ul(d.survivability_moves) +
+    '<p class="memo-callout"><strong>Confidence.</strong> ' + esc(d.confidence || "") + '</p>';
+}
+
+function memoEvidence(evidence) {
+  const esc = escapeHTML;
+  if (!evidence || !evidence.length) return '<p>&mdash;</p>';
+  return '<table class="memo-table"><thead><tr><th>Claim / source</th><th>Strength</th><th>Label</th></tr></thead><tbody>' +
+    evidence.map(r => '<tr><td>' + esc(r.claim) + '</td><td>' + esc(strengthLabel(r.level)) + '</td><td>' + esc(labelLabel(r.label)) + '</td></tr>').join("") +
+    '</tbody></table>';
+}
+
+function memoChange(changes) {
+  const esc = escapeHTML;
+  return (changes || []).map(c =>
+    '<div class="memo-card">' +
+      '<h3>' + esc(c.thesis) + '</h3>' +
+      '<h4>Strengthens</h4><p>' + esc(c.strengthen) + '</p>' +
+      '<h4>Weakens</h4><p>' + esc(c.weaken) + '</p>' +
+      '<h4>Invalidates</h4><p>' + esc(c.invalidate) + '</p>' +
+    '</div>'
+  ).join("");
+}
+
+function memoQuestions(p) {
+  const esc = escapeHTML;
+  return '<ol class="memo-ol">' + (p.questions || []).map(q => '<li>' + esc(q) + '</li>').join("") + '</ol>';
+}
+
+function memoSourcesAppendix() {
+  if (typeof discoveryState === "undefined" || !discoveryState || !discoveryState.results) return "";
+  const entries = Object.entries(discoveryState.results || {});
+  if (!entries.length) return "";
+  const esc = escapeHTML;
+  const body = entries.map(([q, payload]) =>
+    '<h3>' + esc(q) + '</h3>' +
+    '<ul class="memo-sources">' +
+      (payload.results || []).map(r =>
+        '<li><strong>' + esc(r.title) + '</strong>' +
+        (r.url ? '<br><span class="memo-url">' + esc(r.url) + '</span>' : '') +
+        (r.snippet ? '<br><span class="memo-snippet">' + esc(r.snippet) + '</span>' : '') +
+        '</li>'
+      ).join("") +
+    '</ul>'
+  ).join("");
+  return '<section class="memo-section memo-appendix"><h2><span class="memo-num">A</span>Cited Sources</h2>' + body + '</section>';
+}
+
+function printMemoStyles() {
+  return '@page { size: letter; margin: 0.85in 0.9in; }' +
+    'body { font-family: "Iowan Old Style", Charter, Georgia, serif; color: #0a1f44; line-height: 1.55; font-size: 11pt; margin: 0; padding: 0; }' +
+    '.memo-header { border-bottom: 2px solid #0a1f44; padding-bottom: 14pt; margin-bottom: 16pt; }' +
+    '.memo-header h1 { font-size: 26pt; font-weight: 500; margin: 6pt 0 4pt; letter-spacing: -0.01em; }' +
+    '.memo-eyebrow { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 8.5pt; letter-spacing: 0.16em; text-transform: uppercase; color: #0176d3; font-weight: 600; }' +
+    '.memo-meta { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 8.5pt; color: #6f7a91; }' +
+    '.memo-disclaimer { font-style: italic; color: #6f7a91; font-size: 9.5pt; margin: 0 0 14pt; padding: 6pt 10pt; background: #f7f6f2; border-left: 2px solid #c7c2b2; }' +
+    '.memo-section { margin-bottom: 14pt; }' +
+    '.memo-section h2 { font-size: 16pt; margin: 16pt 0 8pt; padding-bottom: 4pt; border-bottom: 1px solid #c7c2b2; font-weight: 500; page-break-after: avoid; }' +
+    '.memo-num { display: inline-block; font-family: ui-monospace, monospace; font-size: 9pt; color: #0176d3; margin-right: 10pt; font-weight: 600; }' +
+    '.memo-section h3 { font-size: 11.5pt; margin: 12pt 0 4pt; color: #3d4a66; font-weight: 600; page-break-after: avoid; }' +
+    '.memo-section h4 { font-family: ui-monospace, monospace; font-size: 8.5pt; letter-spacing: 0.1em; text-transform: uppercase; color: #6f7a91; margin: 8pt 0 3pt; font-weight: 600; }' +
+    '.memo-headline { font-size: 12.5pt; font-style: italic; color: #0a1f44; border-left: 3px solid #0176d3; padding: 4pt 0 4pt 12pt; margin: 4pt 0 10pt; line-height: 1.4; }' +
+    '.memo-callout { background: #f7f6f2; border-left: 3px solid #0176d3; padding: 8pt 12pt; margin: 8pt 0; font-size: 10pt; }' +
+    '.memo-card { margin: 10pt 0; padding: 10pt 12pt; border: 1px solid #e4e1d7; border-radius: 4pt; page-break-inside: avoid; }' +
+    '.memo-card h3 { margin-top: 0; }' +
+    '.memo-role { font-family: ui-monospace, monospace; font-size: 8.5pt; letter-spacing: 0.08em; text-transform: uppercase; color: #6f7a91; margin-left: 8pt; font-weight: 600; }' +
+    'p { margin: 0 0 6pt; }' +
+    'ul, ol { margin: 4pt 0 8pt 20pt; padding: 0; }' +
+    'li { margin-bottom: 3pt; line-height: 1.5; }' +
+    '.memo-ol { counter-reset: q; list-style: none; padding-left: 0; margin-left: 0; }' +
+    '.memo-ol li { padding-left: 32pt; position: relative; margin-bottom: 6pt; }' +
+    '.memo-ol li::before { counter-increment: q; content: "Q" counter(q); position: absolute; left: 0; top: 0; font-family: ui-monospace, monospace; font-size: 8.5pt; color: #0176d3; font-weight: 700; }' +
+    '.memo-dl { margin: 6pt 0; }' +
+    '.memo-dl dt { font-family: ui-monospace, monospace; font-size: 8.5pt; letter-spacing: 0.08em; text-transform: uppercase; color: #6f7a91; font-weight: 600; margin-top: 5pt; }' +
+    '.memo-dl dd { margin: 0 0 4pt; color: #3d4a66; }' +
+    '.memo-table { width: 100%; border-collapse: collapse; margin: 6pt 0; font-size: 9.5pt; }' +
+    '.memo-table th, .memo-table td { border-bottom: 1px solid #e4e1d7; padding: 5pt 8pt; text-align: left; vertical-align: top; }' +
+    '.memo-table th { font-family: ui-monospace, monospace; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 0.1em; color: #6f7a91; font-weight: 600; }' +
+    '.memo-appendix h3 { font-size: 10.5pt; }' +
+    '.memo-sources li { margin-bottom: 6pt; }' +
+    '.memo-url { font-family: ui-monospace, monospace; font-size: 8.5pt; color: #0176d3; word-break: break-all; }' +
+    '.memo-snippet { font-size: 9.5pt; color: #3d4a66; }' +
+    '@media print { a { color: #0176d3; text-decoration: none; } }';
 }
 
 /* ---------- UI plumbing ---------- */
@@ -2841,75 +2899,25 @@ function clearInputs() {
   flashGenMeta("Cleared.");
 }
 
-/* ---------- Live discovery: real cached results gathered offline ----------
-   These are real findings from public web searches I ran while building this.
-   If /api/search is wired (Tavily), the live results replace these.
-   If not, the demo still ships real evidence with cited URLs.
------------------------------------------------------------------------------ */
+/* ---------- Live discovery ----------
+   Retrieval runs through /api/search (Tavily-backed Vercel function).
+   No cached fallback — when /api/search is unreachable, the discovery
+   feed returns a placeholder that explicitly says retrieval is unavailable.
+----------------------------------------- */
 
-const KEYCARD_QUERIES = [
-  "Keycard.ai agent identity authorization",
-  "Keycard funding seed Series A 2025",
-  "Okta non-human identity AI agents 2026",
-  "Model Context Protocol MCP OAuth authorization",
-  "Cloudflare Agents authentication MCP",
-  "WorkOS FGA AI agents authorization"
-];
 
-const CACHED_SEARCH_RESULTS = {
-  "keycard.ai agent identity authorization": [
-    { title: "Keycard — The Control Plane for Autonomous Agents", url: "https://www.keycard.ai/", snippet: "Identity and access platform purpose-built for AI agents. Cryptographically proves who an agent is, who they act for, and whether they are authorized — backed by federated, standards-based protocols." },
-    { title: "Keycard is identity infrastructure for the agent-native world", url: "https://www.keycard.ai/announcement", snippet: "B2B SaaS sitting between AI agents and the APIs and systems they access. Resolves identity, enforces policy, issues scoped access. Ephemeral tokens encode task context, user authorization, and resource ownership." },
-    { title: "How to Authorize AI Agents Using Token Exchange Open Standards", url: "https://www.keycard.ai/blog/how-to-authorize-ai-agents-using-token-exchange-open-standards/", snippet: "Replaces broad, static permissions with dynamic credentials scoped to specific tasks. First production implementation of OAuth 2.1 Client ID Metadata Documents in MCP." },
-    { title: "Keycard for AI Agent Security: Features, Pricing, and Alternatives — WorkOS", url: "https://workos.com/blog/keycard-vs-workos-agent-credentials-enterprise-authentication", snippet: "Direct competitive teardown by WorkOS. Confirms WorkOS FGA as the most explicit head-to-head in the agent authorization category." },
-    { title: "Keycard emerges from stealth with identity and access solution for AI agents", url: "https://www.helpnetsecurity.com/2025/10/22/keycard-ai-agents-identity-access-platform/", snippet: "Emerged from stealth October 22, 2025. Co-founded by Ian Livingstone, Matthew Creager, Jared Hanson. Dual-buyer narrative: developers and security teams." }
-  ],
-  "keycard funding seed series a 2025": [
-    { title: "Keycard Launched With $38 Million To Transform Identity And Access For AI Agents", url: "https://pulse2.com/keycard-launched-with-38-million-to-transform-identity-and-access-for-ai-agents/", snippet: "$38M total funding: $8M seed co-led by Andreessen Horowitz and Boldstart Ventures; $30M Series A led by Acrew Capital." },
-    { title: "Keycard funding, news & analysis — Sacra", url: "https://sacra.com/c/keycard/", snippet: "Independent diligence coverage of Keycard's funding rounds, leadership, and category positioning." },
-    { title: "Coding Agents Are Ungovernable, We're Fixing That: Keycard acquires Anchor.dev", url: "https://www.keycard.ai/blog/keycard-acquires-anchor-dev", snippet: "Keycard acquired Anchor.dev to extend coverage into coding-agent governance. Signal of M&A capacity and category expansion." },
-    { title: "Keycard — Building the Future of Access for AI Agents", url: "https://www.keycard.ai/company", snippet: "Company profile and founding thesis page." }
-  ],
-  "okta non-human identity ai agents 2026": [
-    { title: "Every Agent Needs an Identity: Introducing Okta for AI Agents", url: "https://www.okta.com/blog/ai/okta-ai-agents-early-access-announcement/", snippet: "Okta for AI Agents became generally available April 30, 2026. Universal Directory establishes and manages AI agent identities with risk classification and ownership per agent." },
-    { title: "Okta announces new blueprint for the secure agentic enterprise", url: "https://www.okta.com/newsroom/press-releases/showcase-2026/", snippet: "Okta's blueprint frames three questions: where are my agents, what can they connect to, what can they do. Direct competitive framing for any agent-identity standalone." },
-    { title: "Okta secures the agentic enterprise — Agent Discovery in ISPM", url: "https://www.okta.com/newsroom/press-releases/okta-secures-the-agentic-enterprise-with-new-tools-for-discovering-and-mitigating-shadow-ai-risks/", snippet: "Agent Discovery in Identity Security Posture Management surfaces shadow AI and maps agent blast radius. Native integrations include Boomi, DataRobot, Google Vertex AI." },
-    { title: "Okta Wants AI Agents Treated Like Identities — MSSP Alert", url: "https://www.msspalert.com/news/okta-wants-ai-agents-treated-like-identities-heres-why-that-matters", snippet: "Industry framing of Okta's position. 88% of organizations report AI agent security incidents; only 22% treat agents as identity-bearing entities — TAM signal." }
-  ],
-  "model context protocol mcp oauth authorization": [
-    { title: "Authorization — Model Context Protocol", url: "https://modelcontextprotocol.io/specification/draft/basic/authorization", snippet: "MCP authorization uses OAuth 2.1. MCP servers classified as OAuth Resource Servers. PKCE mandatory. Protected Resource Metadata at /.well-known/oauth-protected-resource." },
-    { title: "Model Context Protocol Spec Updates from June 2025 — Auth0", url: "https://auth0.com/blog/mcp-specs-update-all-about-auth/", snippet: "2025-06-18 spec introduced HTTP transport with OAuth 2.1. Clients must maintain separate registration state per authorization server." },
-    { title: "Authorization for MCP: OAuth 2.1, PRMs, and Best Practices — Oso", url: "https://www.osohq.com/learn/authorization-for-ai-agents-mcp-oauth-21", snippet: "Production patterns for MCP authorization: PRMs, dynamic client registration, scope discovery — the spec surface Keycard claims first production OAuth 2.1 CIMD implementation against." },
-    { title: "MCP authentication and authorization implementation guide — Stytch", url: "https://stytch.com/blog/MCP-authentication-and-authorization-guide/", snippet: "Direct evidence that adjacent identity startups (Stytch, Descope, Auth0) are tracking and implementing the MCP auth spec." }
-  ],
-  "cloudflare agents authentication mcp": [
-    { title: "Authorization — Cloudflare Agents docs", url: "https://developers.cloudflare.com/agents/model-context-protocol/authorization/", snippet: "Cloudflare Agents supports MCP authorization. OAuth Provider Library, third-party providers (GitHub, Google), service tokens for automated workflows." },
-    { title: "Managed OAuth for Access: make internal apps agent-ready in one click", url: "https://blog.cloudflare.com/managed-oauth-for-access/", snippet: "Every Access application now supports managed OAuth. Agents speaking OAuth 2.0 can discover endpoints, send users through auth flow, receive tokens — bundled with existing Cloudflare One." },
-    { title: "The age of agents: cryptographically recognizing agent traffic", url: "https://blog.cloudflare.com/signed-agents/", snippet: "Cloudflare ships signed agent traffic recognition. Bundle pressure on any standalone agent-identity vendor — runtime + identity + edge in one stack." },
-    { title: "Piecing together the Agent puzzle: MCP, authentication, and Durable Objects", url: "https://blog.cloudflare.com/building-ai-agents-with-mcp-authn-authz-and-durable-objects/", snippet: "Cloudflare's full stack play for agent runtime plus authn plus authz. Strongest 'hyperscaler bundling' signal in the category." }
-  ],
-  "workos fga ai agents authorization": [
-    { title: "WorkOS FGA: The authorization layer for AI agents", url: "https://workos.com/blog/agents-need-authorization-not-just-authentication", snippet: "'Authentication proves identity; authorization defines blast radius.' WorkOS Fine-Grained Authorization positioned head-on with Keycard's framing." },
-    { title: "Secure auth for MCP servers — WorkOS", url: "https://workos.com/mcp", snippet: "WorkOS AuthKit supports OAuth 2.1 as MCP-compatible authorization server. Same standard Keycard implements; both competing on developer ergonomics and enterprise depth." },
-    { title: "Best authorization platforms for managing AI agent permissions in 2026 — WorkOS", url: "https://workos.com/blog/best-authorization-platforms-ai-agent-permissions-2026", snippet: "WorkOS's own ranking of category players: Permit.io, Cerbos, Authzed, Oso. Keycard category-adjacent." },
-    { title: "Securing agentic apps: Give your AI agents their own credentials — WorkOS", url: "https://workos.com/blog/ai-agent-credentials", snippet: "Same architectural thesis as Keycard: per-agent credentials, scoped tokens. Confirms Keycard's wedge is contested." }
-  ]
-};
-
-function cacheKey(q) { return q.toLowerCase().trim().replace(/\s+/g, " "); }
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function buildQueriesForCompany(company, website) {
   const name = (company || "").trim();
   const site = (website || "").trim();
-  const isKeycard = /^keycard$/i.test(name) || /keycard\.ai/i.test(site);
-  if (isKeycard) return KEYCARD_QUERIES.slice();
-  const q = [];
-  q.push(name + " " + site + " product overview");
-  q.push(name + " funding round investors");
-  q.push(name + " competitors alternatives");
-  q.push(name + " API documentation integrations");
-  q.push(name + " customer case study");
+  const q = [
+    name + " " + site + " product overview",
+    name + " funding round investors",
+    name + " competitors alternatives",
+    name + " API documentation integrations",
+    name + " customer case study"
+  ];
   return q.map(s => s.replace(/\s+/g, " ").trim());
 }
 
@@ -2926,17 +2934,19 @@ async function searchOne(query) {
         return { mode: "live", results: data.results };
       }
     }
-  } catch (e) { /* fall through to cache */ }
-  const cached = CACHED_SEARCH_RESULTS[cacheKey(query)];
-  await delay(550 + Math.random() * 950);
-  if (cached) return { mode: "cached", results: cached };
+  } catch (e) { /* retrieval unavailable */ }
+  await delay(400);
   return {
-    mode: "cached",
-    results: [{ title: "No cached results for this query", url: "", snippet: "Deploy to Vercel with TAVILY_API_KEY set to enable live fetch for arbitrary queries." }]
+    mode: "unavailable",
+    results: [{
+      title: "Retrieval unavailable",
+      url: "",
+      snippet: "The /api/search endpoint is not reachable from this origin. Deploy to Vercel with TAVILY_API_KEY set to enable live retrieval, or paste research notes manually."
+    }]
   };
 }
 
-const discoveryState = { queries: [], results: {}, running: false, mode: "cached", startedAt: 0 };
+const discoveryState = { queries: [], results: {}, running: false, mode: "unavailable", startedAt: 0 };
 
 async function runLiveDiscovery() {
   if (discoveryState.running) return;
@@ -3005,7 +3015,7 @@ async function runLiveDiscovery() {
     statusEl.textContent = "Live · complete";
     statusEl.className = "discovery-status done";
   } else {
-    statusEl.textContent = "Cached real findings";
+    statusEl.textContent = "Retrieval unavailable";
     statusEl.className = "discovery-status cached";
   }
   document.getElementById("discovery-meta").innerHTML =
@@ -3039,58 +3049,6 @@ function buildNotesFromResults(company, website, resultsByQuery, mode) {
   return lines.join("\n");
 }
 
-const KEYCARD_NOTES = [
-  "TARGET: Keycard (keycard.ai) — agent identity & authorization infrastructure.",
-  "",
-  "WORKING HYPOTHESIS (public signals + adjacent context — weak to medium evidence):",
-  "- Building per-agent identity, scoped credentials, and decision-level audit for AI agents acting on behalf of users or systems.",
-  "- Stated positioning around OAuth-shaped primitives, but purpose-built for agents: principal = human delegating to ephemeral agent, not user-to-service.",
-  "- Decision-level audit trail (vs request-level logging) appears to be a stated differentiator.",
-  "- Deployment shape: SDK + self-hostable gateway likely. Developer-first onboarding, enterprise control plane for security org.",
-  "",
-  "ADJACENT LANDSCAPE (verified at the category level; specific vendor positioning inferred from public sources):",
-  "- Identity incumbents: Okta (non-human identity / 'Auth for GenAI'), Microsoft Entra ID (Copilot Studio bundling), Auth0 within Okta, Ping/ForgeRock for regulated buyers.",
-  "- AI-native auth startups: WorkOS (Auth for AI), Anon (browser session capture for consumer agents), Stytch Connected Apps, Permit.io / Cerbos / Authzed (authorization).",
-  "- Framework absorption risk: LangChain / LangGraph, OpenAI Assistants & Responses API, Anthropic via MCP, CrewAI.",
-  "- Hyperscaler runtime bundling: Cloudflare Agents, AWS Bedrock Agents, Google Agentspace, Azure AI Foundry.",
-  "- API security adjacency: Cequence, Salt Security, Kong, Pomerium, Teleport.",
-  "",
-  "CUSTOMER / BUYER SIGNAL (hypothesis — needs validation via primary calls):",
-  "- Dual-buyer pattern: platform engineering owns SDK integration; CISO / security org owns the procurement gate. Compliance is the unlock for budget.",
-  "- Regulated industries (financial services, healthcare) are the deepest budget but slowest cycle. Likely flagship customer pattern: one regulated logo, then volume through fintech / AI-native enterprise.",
-  "- Compliance angle: SOC2 / NIST AI RMF / regulator-readable audit trail. The 'audit deliverable' is the GRC unlock.",
-  "",
-  "ARCHITECTURE NOTES (inferred):",
-  "- In-path at the moment of tool invocation. Mediates token issuance, scope enforcement, behavioral logging.",
-  "- Likely OpenTelemetry-friendly trace export. MCP protocol stance unknown — critical diligence item.",
-  "- Multi-LLM, multi-runtime neutrality appears to be a brand position and a technical posture. Stretching this neutrality across LangChain + OpenAI Assistants + raw Anthropic SDK is where depth would show.",
-  "",
-  "OPEN QUESTIONS FOR DILIGENCE:",
-  "- Integration depth in production: SDK only, gateway, runtime middleware, or sidecar?",
-  "- Audit granularity: request-level, decision-level, or reasoning-trace-level?",
-  "- MCP stance: implementer, contributor, neutral?",
-  "- Pricing: seat, per-agent, consumption, or outcome-based?",
-  "- Customer evidence for audit depth vs marketing claims — any regulator-facing artifacts?",
-  "- Team background: net-new agent identity perspective, or ex-Okta / ex-Auth0 carrying OAuth assumptions?",
-  "- Open-source posture: SDK open, gateway open, policy engine open, or none?",
-  "- Behavior when LangChain + OpenAI Assistants are both in production at the same customer?",
-  "",
-  "SOURCE MIX (notional):",
-  "- Public website + docs (weak evidence — marketing copy)",
-  "- LinkedIn hiring signals (medium — function/seniority of recent hires informs buyer & roadmap)",
-  "- Adjacent vendor positioning (Okta non-human identity announcements, Cloudflare Agents launch, MCP spec updates) (medium)",
-  "- Primary customer interviews: not yet conducted (open)"
-].join("\n");
-
-async function loadKeycardDemo() {
-  document.getElementById("in-company").value = "Keycard";
-  document.getElementById("in-website").value = "keycard.ai";
-  document.getElementById("in-notes").value = "";
-  flashGenMeta("Keycard demo loaded — starting live discovery.");
-  await delay(280);
-  await runLiveDiscovery();
-}
-
 function setMode(mode) {
   state.mode = mode;
   document.querySelectorAll(".seg-btn").forEach(b => { b.classList.toggle("active", b.getAttribute("data-mode") === mode); });
@@ -3107,7 +3065,6 @@ function init() {
   state.saved = loadSaved();
   renderSavedList();
 
-  document.getElementById("btn-demo-keycard").addEventListener("click", loadKeycardDemo);
   document.getElementById("btn-generate").addEventListener("click", generate);
   document.getElementById("btn-discover").addEventListener("click", runLiveDiscovery);
   document.getElementById("btn-clear").addEventListener("click", clearInputs);
