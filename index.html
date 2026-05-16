@@ -391,6 +391,31 @@ input[type="text"]:focus, textarea:focus {
   color: var(--text);
 }
 .empty-card p { margin: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+.empty-workflow {
+  margin: 32px 0 0;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--border);
+}
+.empty-workflow-head { margin-bottom: 16px; }
+.empty-workflow-head .empty-card-num { margin-bottom: 4px; }
+.empty-workflow-head h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  margin: 4px 0 6px;
+  color: var(--text);
+}
+.empty-workflow-head p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  max-width: 68ch;
+}
+.empty-workflow .workflow {
+  margin-top: 6px;
+}
 @media (max-width: 760px) {
   .empty-grid { grid-template-columns: 1fr; }
   .empty-state { padding: 36px 28px; }
@@ -1515,12 +1540,36 @@ input[type="text"]:focus, textarea:focus {
 
     <div id="empty-state" class="empty-state">
       <div class="empty-eyebrow">Investor workbench</div>
-      <h1 class="empty-title">Reason about differentiation. Not just what a company does today.</h1>
+      <h1 class="empty-title">Forecast company differentiation based on competitor signaling.</h1>
       <p class="empty-body">
         Most research tools summarize. This workbench reasons about <em>where adjacent platforms are likely converging</em>,
         what each incumbent is <em>technically capable of</em> versus <em>strategically incentivized</em> to build, and
         whether the target&rsquo;s wedge stays differentiated as that convergence unfolds.
       </p>
+
+      <div class="empty-workflow">
+        <div class="empty-workflow-head">
+          <div class="empty-card-num">System architecture</div>
+          <h3>Read future system design</h3>
+          <p>The reasoning stack &mdash; from discovery through customer evidence through synthesis. Each stage is a separable concern.</p>
+        </div>
+        <div class="workflow">
+          <div class="wf-stage"><div class="wf-num">01</div><div class="wf-name">ChatGPT</div><div class="wf-role">Reasoning / workplan</div><div class="wf-desc">Decompose the diligence question into structured sub-investigations.</div></div>
+          <div class="wf-arrow"></div>
+          <div class="wf-stage"><div class="wf-num">02</div><div class="wf-name">Perplexity</div><div class="wf-role">Discovery</div><div class="wf-desc">Surface candidate sources, competitors, integrations, and ecosystem signals.</div></div>
+          <div class="wf-arrow"></div>
+          <div class="wf-stage"><div class="wf-num">03</div><div class="wf-name">NotebookLM</div><div class="wf-role">Source-grounded synthesis</div><div class="wf-desc">Constrain claims to a curated corpus. Reduces hallucinated linkages.</div></div>
+          <div class="wf-arrow"></div>
+          <div class="wf-stage"><div class="wf-num">04</div><div class="wf-name">Paradigm / Raylu</div><div class="wf-role">Ecosystem mapping</div><div class="wf-desc">Resolve adjacency graph and convergence pressure across incumbents and startups.</div></div>
+          <div class="wf-arrow"></div>
+          <div class="wf-stage"><div class="wf-num">05</div><div class="wf-name">Tegus / AlphaSights</div><div class="wf-role">Customer evidence</div><div class="wf-desc">Ground buyer, workflow ownership, and displacement narrative in primary calls.</div></div>
+          <div class="wf-arrow"></div>
+          <div class="wf-stage"><div class="wf-num">06</div><div class="wf-name">Claude</div><div class="wf-role">Memo synthesis</div><div class="wf-desc">Tighten investor-facing reasoning, voice, and durability claims.</div></div>
+          <div class="wf-arrow"></div>
+          <div class="wf-stage"><div class="wf-num">07</div><div class="wf-name">Wispr &amp; Granola</div><div class="wf-role">Voice &amp; meeting capture</div><div class="wf-desc">Wispr captures voice memos and live dictation. Granola captures call transcripts and meeting notes. Both feed observations back into the reasoning loop as fresh evidence.</div></div>
+        </div>
+      </div>
+
       <hr class="empty-divider" />
       <div class="empty-grid">
         <div class="empty-card">
@@ -1699,8 +1748,7 @@ input[type="text"]:focus, textarea:focus {
     </div>
     <div class="modal-body">
       <p class="modal-lead">
-        This prototype focuses on the <em>reasoning workflow architecture</em>. Each stage below represents a separable concern.
-        Live integrations are not implemented; the engine reasons over manual inputs.
+        Each stage below represents a separable concern in the strategic reasoning stack &mdash; from discovery through synthesis through memo output.
       </p>
       <div class="workflow">
         <div class="wf-stage"><div class="wf-num">01</div><div class="wf-name">ChatGPT</div><div class="wf-role">Reasoning / workplan</div><div class="wf-desc">Decompose the diligence question into structured sub-investigations.</div></div>
