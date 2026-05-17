@@ -32,11 +32,16 @@ export default async function handler(req, res) {
     });
   }
 
-  const apiKey = process.env.TAVILY_API_KEY;
+  // Accept any of the common name variants so a Vercel env-var naming
+  // mismatch doesn't silently break the integration.
+  const apiKey = process.env.TAVILY_API_KEY
+              || process.env.Tavily
+              || process.env.TAVILY
+              || process.env.TAVILY_KEY;
   if (!apiKey) {
     return res.status(500).json({
-      error: "TAVILY_API_KEY not configured",
-      hint: "Add it in Vercel → Project → Settings → Environment Variables, then redeploy. Call with {\"query\":\"__debug\"} to inspect env state."
+      error: "Tavily API key not configured",
+      hint: "Add it in Vercel → Project → Settings → Environment Variables (any of TAVILY_API_KEY, Tavily, TAVILY, or TAVILY_KEY), then redeploy. Call with {\"query\":\"__debug\"} to inspect env state."
     });
   }
 
