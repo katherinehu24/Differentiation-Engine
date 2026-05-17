@@ -17,11 +17,26 @@ export default async function handler(req, res) {
   const query = ((body && body.query) || "").toString().trim();
   if (!query) return res.status(400).json({ error: "missing query" });
 
+  // Debug endpoint — call with {"query":"__debug"} to inspect what the
+  // function actually sees at runtime. Never returns the value of any secret.
+  if (query === "__debug") {
+    const tavilyKeys = Object.keys(process.env).filter(k => k.toLowerCase().includes("tavily"));
+    return res.status(200).json({
+      debug: true,
+      hasTavilyKey: !!process.env.TAVILY_API_KEY,
+      tavilyKeyLength: (process.env.TAVILY_API_KEY || "").length,
+      envKeysContainingTavily: tavilyKeys,
+      vercelEnv: process.env.VERCEL_ENV || null,
+      vercelRegion: process.env.VERCEL_REGION || null,
+      nodeVersion: process.version
+    });
+  }
+
   const apiKey = process.env.TAVILY_API_KEY;
   if (!apiKey) {
     return res.status(500).json({
       error: "TAVILY_API_KEY not configured",
-      hint: "Add it in Vercel → Project → Settings → Environment Variables, then redeploy."
+      hint: "Add it in Vercel → Project → Settings → Environment Variables, then redeploy. Call with {\"query\":\"__debug\"} to inspect env state."
     });
   }
 
